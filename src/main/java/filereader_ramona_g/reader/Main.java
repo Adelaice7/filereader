@@ -19,37 +19,31 @@ public class Main {
 			File file = new File(input_path);
 			String output_path = null;
 			String line = null;
-
+			
 			if (args.length > 1) {
-
 				output_path = args[1];
-				try (
-						BufferedReader reader = new BufferedReader(new FileReader(file));
-						BufferedWriter writer = new BufferedWriter(new FileWriter(output_path));
-						) 
-				{
-					
-					while ((line = reader.readLine()) != null) {
+			}
+			
+			try (
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					BufferedWriter writer = new BufferedWriter(new FileWriter(output_path));
+				) 
+			{
+			
+				while ((line = reader.readLine()) != null) {
+					if (args.length > 1) {
 						writer.write(line);
 						writer.newLine();
-					}
-				} catch (FileNotFoundException e) {
-					System.out.println("Wrong input file path given!");
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				}
-			} else {
-				try (BufferedReader reader = new BufferedReader(new FileReader(file)); ){
-					while ((line = reader.readLine()) != null) {
+						
+					} else {
 						System.out.println(line);
 					}
-					
-				} catch (FileNotFoundException e) {
-					System.out.println("Wrong input file path given!");
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
+				
+			} catch (FileNotFoundException e) {
+				System.out.println("Wrong input file path given!");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 			
 		} else {
