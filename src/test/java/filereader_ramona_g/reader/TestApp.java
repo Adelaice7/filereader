@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringReader;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +18,6 @@ public class TestApp {
 	@DisplayName("Test Print To Console Function")
 	public void testMainPrintToConsole() throws IOException {
 		String inpath = "C:\\Users\\gotthard\\Documents\\valami.txt";
-		String testFilePath = "C:\\\\Users\\\\gotthard\\\\Documents\\\\test.txt";
-		File testOutFile = new File(testFilePath);
 		
 		ByteArrayOutputStream os = new  ByteArrayOutputStream();
 		PrintStream testStream = new PrintStream(os);
