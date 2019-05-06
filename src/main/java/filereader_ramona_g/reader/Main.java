@@ -20,16 +20,19 @@ public class Main {
 			String output_path = null;
 			String line = null;
 			
-			if (args.length > 1) {
-				output_path = args[1];
-			}
+			BufferedWriter writer = null;
 			
 			try (
 					BufferedReader reader = new BufferedReader(new FileReader(file));
-					BufferedWriter writer = new BufferedWriter(new FileWriter(output_path));
-				) 
+				)
 			{
-			
+
+				if (args.length > 1) {
+					output_path = args[1];
+				
+					writer = new BufferedWriter(new FileWriter(output_path));
+				}
+				
 				while ((line = reader.readLine()) != null) {
 					if (args.length > 1) {
 						writer.write(line);
@@ -44,6 +47,14 @@ public class Main {
 				System.out.println("Wrong input file path given!");
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				if (writer != null) {
+					try {
+						writer.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 			
 		} else {
