@@ -17,42 +17,39 @@ public class Main {
 		if (args.length > 0) {
 			String input_path = args[0];
 			File file = new File(input_path);
-			
-			BufferedReader reader;
-			BufferedWriter writer;
-			try {
-				reader = new BufferedReader(new FileReader(file));
+			String output_path = null;
+			String line = null;
 
-				String line;
-				
-				List<String> text = new ArrayList<String>();
-				
-				while ((line = reader.readLine()) != null) {
-					text.add(line);
-					System.out.println(line);
-				}
-				reader.close();
+			if (args.length > 1) {
 
-				if (args.length > 1 && args[1] != null) {
-					String output_path = args[1];
-					writer = new BufferedWriter(new FileWriter(output_path));
-
-					for (int i = 0; i < text.size(); i++) {
-						String l = text.get(i);
-						writer.write(l);
-
-						if (i != text.size()-1) {
-							writer.newLine();
-						}
+				output_path = args[1];
+				try (
+						BufferedReader reader = new BufferedReader(new FileReader(file));
+						BufferedWriter writer = new BufferedWriter(new FileWriter(output_path));
+						) 
+				{
+					
+					while ((line = reader.readLine()) != null) {
+						writer.write(line);
+						writer.newLine();
 					}
-					writer.close();
+				} catch (FileNotFoundException e) {
+					System.out.println("Wrong input file path given!");
+				} catch (IOException e) {
+					
+					e.printStackTrace();
 				}
-				
-			} catch (FileNotFoundException e) {
-				System.out.println("Wrong input file path given!");
-			} catch (IOException e) {
-				
-				e.printStackTrace();
+			} else {
+				try (BufferedReader reader = new BufferedReader(new FileReader(file)); ){
+					while ((line = reader.readLine()) != null) {
+						System.out.println(line);
+					}
+					
+				} catch (FileNotFoundException e) {
+					System.out.println("Wrong input file path given!");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			
 		} else {
