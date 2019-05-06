@@ -39,7 +39,7 @@ public class Main {
 		
 		try (
 				BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-				BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
 			) {
 			
 			while ((line = reader.readLine()) != null) {

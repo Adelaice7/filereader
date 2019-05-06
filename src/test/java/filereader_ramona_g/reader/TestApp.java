@@ -1,13 +1,14 @@
 package filereader_ramona_g.reader;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,29 +21,25 @@ public class TestApp {
 	public void testMainPrintToConsole() throws IOException {
 		String inpath = "C:\\Users\\gotthard\\Documents\\valami.txt";
 		String testFilePath = "C:\\\\Users\\\\gotthard\\\\Documents\\\\test.txt";
-		
 		File testOutFile = new File(testFilePath);
-
-		PrintStream testStream = new PrintStream(testOutFile);
+		
+		ByteArrayOutputStream os = new  ByteArrayOutputStream();
+		PrintStream testStream = new PrintStream(os);
 		System.setOut(testStream);
 
 		File inputFile = new File(inpath);
-		
-		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-		BufferedReader testReader = new BufferedReader(new FileReader(testOutFile));
-		
+
 		String[] args = new String[1];
 		args[0] = inpath;
-		
+
 		Main.main(args);
 		
-		Assertions.assertEquals(reader.read(), testReader.read());
-		
-		reader.close();
-		testReader.close();
-		
-		if (testOutFile.exists()) {
-			testOutFile.delete();
+		try (
+				BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+				ByteArrayInputStream in = new ByteArrayInputStream(os.toByteArray());
+			) {
+
+			Assertions.assertEquals(reader.read(), in.read());
 		}
 	}
 	
@@ -54,19 +51,18 @@ public class TestApp {
 		File inputFile = new File(inpath);
 		File outFile = new File(outpath);
 
-		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-		BufferedReader testReader = new BufferedReader(new FileReader(outFile));
-
 		String[] args = new String[2];
 		args[0] = inpath;
 		args[1] = outpath;
 		
 		Main.main(args);
 		
-		Assertions.assertEquals(reader.read(), testReader.read());
-		
-		reader.close();
-		testReader.close();
+		try(
+				BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+				BufferedReader testReader = new BufferedReader(new FileReader(outFile));
+				) {
+			
+			Assertions.assertEquals(reader.read(), testReader.read());
+		}
 	}
-	
 }
