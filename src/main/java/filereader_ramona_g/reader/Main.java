@@ -11,53 +11,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+	
+	public static void printFileToConsole(String[] args) {
+		String input_path = args[0];
+		File inputFile = new File(input_path);
+		String line = null;
+		
+		try (
+				BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+			) {
+			
+			while ((line = reader.readLine()) != null) {
+				System.out.println(line);
+				
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Wrong input file path given!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void copyFileToFile(String[] args) {
+		String input_path = args[0];
+		File inputFile = new File(input_path);
+		String output_path = args[1];
+		File outputFile = new File(output_path);
+		String line = null;
+		
+		try (
+				BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+			) {
+			
+			while ((line = reader.readLine()) != null) {
+				if (args.length > 1) {
+					writer.write(line);
+					writer.newLine();
+					
+				} else {
+					System.out.println(line);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	public static void main(String[] args) {
 		
 		if (args.length > 0) {
-			String input_path = args[0];
-			File inputFile = new File(input_path);
-			File outputFile = null;
-			String output_path = null;
-			String line = null;
+			printFileToConsole(args);
 			
-			BufferedWriter writer = null;
-			
-			try (
-					BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-				)
-			{
-				if (args.length > 1) {
-					output_path = args[1];
-					outputFile = new File(output_path);
-					writer = new BufferedWriter(new FileWriter(outputFile));
-				}
-				
-				while ((line = reader.readLine()) != null) {
-					if (args.length > 1) {
-						writer.write(line);
-						writer.newLine();
-						
-					} else {
-						System.out.println(line);
-					}
-				}
-				
-			} catch (FileNotFoundException e) {
-				System.out.println("Wrong input file path given!");
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				
-			} finally {
-				if (writer != null) {
-					try {
-						writer.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+			if (args.length > 1) {
+				copyFileToFile(args);
+			}			
 			
 		} else {
 			System.out.println("No parameters entered.");
